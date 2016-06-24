@@ -1,7 +1,9 @@
 Function Get-AppVeyorProjectSetting {
     
     [CmdletBinding()]
-    [OutputType()]
+    [OutputType(
+        [AppVeyorProjectSetting]
+    )]
 
     Param (
         [Parameter(
@@ -27,15 +29,13 @@ Function Get-AppVeyorProjectSetting {
     )
 
     Process {
-        $apiParameters = @{
-            Method = 'GET'
-            RestMethod = "projects/${AccountName}/${ProjectName}/settings"
-        }
-
         if ($Yaml.IsPresent) {
-            $apiParameters.RestMethod += '/yaml'
+            Invoke-AppVeyorApi -Method 'GET' -RestMethod "projects/${AccountName}/${ProjectName}/settings/yaml"
+        } else {
+            [AppVeyorProjectSetting]::new(
+                (Invoke-AppVeyorApi -Method 'GET' -RestMethod "projects/${AccountName}/${ProjectName}/settings" |
+                    Select-Object -ExpandProperty settings)
+            )
         }
-
-        Invoke-AppVeyorApi @apiParameters
     }
 }
