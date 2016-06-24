@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="PSAppVeyor : A PowerShell Module to interact with the AppVeyor REST Api.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>PSAppVeyor</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/dotps1/PSAppVeyor">View on GitHub</a>
+
+          <h1 id="project_title">PSAppVeyor</h1>
+          <h2 id="project_tagline">A PowerShell Module to interact with the AppVeyor REST Api.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/dotps1/PSAppVeyor/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/dotps1/PSAppVeyor/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="psappveyor" class="anchor" href="#psappveyor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PSAppVeyor</h1>
+
+<h3>
+<a id="a-powershell-module-providing-functions-to-interact-with-the-appveyor-rest-api" class="anchor" href="#a-powershell-module-providing-functions-to-interact-with-the-appveyor-rest-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A PowerShell Module providing functions to interact with the <a href="www.appveyor.com">AppVeyor</a> REST API.</h3>
+
+<p>This module is still very beta, in fact, we will just call it alpha.</p>
+
+<p>To get started after you install/import it, you need to use the <code>Set-AppVeyorApiToken</code> cmdlet.  You can get the reqired value from your <a href="https://ci.appveyor.com/api-token">AppVeyor Account</a>.</p>
+
+<p>After that, there is currently only a few commands available.  Use the Get-Command cmdlet to check them out.</p>
+
+<pre><code>PS GitHub:\&gt; Get-Command -Module PSAppVeyor
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Get-AppVeyorBuild                                  0.1.3      PSAppVeyor
+Function        Get-AppVeyorProject                                0.1.3      PSAppVeyor
+Function        Get-AppVeyorProjectSetting                         0.1.3      PSAppVeyor
+Function        New-AppVeyorProject                                0.1.3      PSAppVeyor
+Function        Remove-AppVeyorProject                             0.1.3      PSAppVeyor
+Function        Set-AppVeyorApiToken                               0.1.3      PSAppVeyor
+Function        Start-AppVeyorProjectBuild                         0.1.3      PSAppVeyor
+Function        Stop-AppVeyorProjectBuild                          0.1.3      PSAppVeyor
+Function        Update-AppVeyorProjectBuildNumber                  0.1.3      PSAppVeyor
+</code></pre>
+
+<p>I havent had a whole lot of time to put into this, but I will keep adding functionality.</p>
+
+<p>have fun.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">PSAppVeyor maintained by <a href="https://github.com/dotps1">dotps1</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
