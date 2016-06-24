@@ -226,7 +226,6 @@ Class AppVeyorConfiguration {
         $this.MatrixAllowFailures = $object.matrixAllowFailures
         $this.Artifacts = $object.atrifacts
         $this.Notifications = $object.notifications
-
     }
 
     AppVeyorConfiguration() { }
