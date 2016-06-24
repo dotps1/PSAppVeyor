@@ -1,7 +1,9 @@
 Function Update-AppVeyorProjectBuildNumber {
 
     [CmdletBinding()]
-    [OutputType()]
+    [OutputType(
+        [Void]
+    )]
 
     Param (
         [Parameter(

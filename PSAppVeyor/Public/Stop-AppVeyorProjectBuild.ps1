@@ -1,5 +1,5 @@
-Function Remove-AppVeyorProject {
-    
+Function Stop-AppVeyorProjectBuild {
+
     [CmdletBinding()]
     [OutputType(
         [Void]
@@ -17,24 +17,18 @@ Function Remove-AppVeyorProject {
             Mandatory = $true,
             ValueFromPipelineByPropertyName = $true
         )]
-        [Alias(
-            'Slug'
-        )]
         [String]
         $ProjectName,
 
-        [Parameter()]
-        [Switch]
-        $BuildCacheOnly
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Int]
+        $BuildId
     )
 
     Process {
-        $restMethod = "projects/${AccountName}/${ProjectName}"
-
-        if ($BuildCacheOnly.IsPresent) {
-            $restMethod += '/buildcache'
-        }
-
-        Invoke-AppVeyorApi -Method 'DELETE' -RestMethod $restMethod
+        Invoke-AppVeyorApi -Method 'DELETE' -RestMethod "builds/${AccountName}/${ProjectName}/${BuildId}"
     }
 }
