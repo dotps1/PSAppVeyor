@@ -56,7 +56,15 @@ Function Invoke-AppVeyorApi {
     try {
         Invoke-RestMethod @request
     } catch {
-        Write-Error $_
-        return
+        $message = ConvertFrom-Json -InputObject $_.ErrorDetails.Message |
+            Select-Object -ExpandProperty message
+        
+        if ($null -ne $message) {
+            Write-Error -Message $message
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 }

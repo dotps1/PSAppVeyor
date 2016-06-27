@@ -331,6 +331,22 @@ Class AppVeyorAccessRight {
     }
 }
 
+Class AppVeyorEnvironment {
+    [Int]$DeploymentEnvironmentId
+    [String]$Name
+    [String]$Provider
+    [Nullable[DateTime]]$Created
+    [Nullable[DateTime]]$Updated
+
+    AppVeyorEnvironment ([Object]$object) {
+        $this.DeploymentEnvironmentId = $object.deploymentEnvironmentId
+        $this.Name = $object.name
+        $this.Provider = $object.provider
+        $this.Created = $object.created
+        $this.Updated = $object.updated
+    }
+}
+
 Enum AppVeyorRepositoryType {
     gitHub
     bitBucket
