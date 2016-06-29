@@ -335,15 +335,124 @@ Class AppVeyorEnvironment {
     [Int]$DeploymentEnvironmentId
     [String]$Name
     [String]$Provider
+    [String]$EnvironmentAccessKey
+    [AppVeyorEnvironmentSetting[]]$Settings
     [Nullable[DateTime]]$Created
     [Nullable[DateTime]]$Updated
 
-    AppVeyorEnvironment ([Object]$object) {
+    AppVeyorEnvironment([Object]$object) {
         $this.DeploymentEnvironmentId = $object.deploymentEnvironmentId
         $this.Name = $object.name
         $this.Provider = $object.provider
+        $this.EnvironmentAccessKey = $object.environmentAccessKey
+        $this.Settings = $object.settings
         $this.Created = $object.created
         $this.Updated = $object.updated
+    }
+}
+
+Class AppVeyorEnvironmentSetting {
+    [AppVeyorProviderSetting[]]$ProviderSettings
+    [Object[]]$EnvironmentVairables
+
+    AppVeyorEnvironmentSetting([Object]$object) {
+        $this.ProviderSettings = $object.providerSettings
+        $this.EnvironmentVariables = $object.environmentVariables
+    }
+}
+
+Class AppVeyorProviderSetting {
+    [String]$Name
+    [HashTable]$Value
+
+    AppVeyorProviderSetting([Object]$object) {
+        $this.Name = $object.name
+        $this.Value = foreach ($item in $object.value) {
+            [HashTable]@{ 
+                'IsEncrypted' = $item.isEncrypted -as [Bool]
+                'Value' = $item.value -as [String]
+            }    
+        }
+    }
+}
+
+Class AppVeyorUser {
+    [Int]$AccountId
+    [String]$AccountName
+    [Bool]$IsOwner
+    [Bool]$IsCollaborator
+    [Int]$UserId
+    [String]$FullName
+    [String]$Email
+    [Int]$RoleId
+    [String]$RoleName
+    [String]$SuccessfulBuildNotification
+    [String]$FailedBuildNotification
+    [Bool]$NotifyWhenBuildStatusChangedOnly
+    [Nullable[DateTime]]$Created
+    [Nullable[DateTime]]$Updated
+
+    AppVeyorUser([Object]$object) {
+        $this.AccountId = $object.accountId
+        $this.AccountName = $object.accountName
+        $this.IsOwner = $object.isOwner
+        $this.IsCollaborator = $object.isCollaborator
+        $this.UserId = $object.userId
+        $this.FullName = $object.fullName
+        $this.Email = $object.email
+        $this.RoleId = $object.roleId
+        $this.RoleName = $object.roleName
+        $this.SuccessfulBuildNotification = $object.successfuleBuildNotification
+        $this.FailedBuildNotification = $object.FailedBuildNotification
+        $this.NotifyWhenBuildStatusChangedOnly = $object.notifyWhenBuildStatusChangedOnly
+        $this.Created = $object.created
+        $this.Updated = $object.updated
+    }
+}
+
+Class AppVeyorUserRole {
+    [Int]$RoleId
+    [String]$Name
+    [Bool]$IsSystem
+    [Nullable[DateTime]]$Created
+    [AppVeyorUserGroup[]]$Groups
+
+    AppVeyorUserRole([Object]$object, [Bool]$includeGroups) {
+        $this.RoleId = $object.roleId
+        $this.Name = $object.name
+        $this.IsSystem = $object.isSystem
+        $this.Created = $object.created
+
+        if ($includeGroups) {
+            $this.Groups = $this.GetUserGroups()
+        }
+    }
+
+    [AppVeyorUserGroup[]] GetUserGroups() {
+        return Invoke-AppVeyorApi -Method 'GET' -RestMethod ('roles/{0}' -f $this.RoleId) |
+            Select-Object -ExpandProperty groups
+    }
+}
+
+Class AppVeyorUserGroup {
+    [String]$Name
+    [AppVeyorUserGroupPermission[]]$Permissions
+
+    AppVeyorUserGroup([Object]$object) {
+        $this.Name = $object.name
+        $this.Permissions = $object.permissions
+    }
+}
+
+Class AppVeyorUserGroupPermission {
+    [String]$Name
+    [String]$Description
+    [Bool]$Allowed
+
+    AppVeyorUserGroupPermission([Object]$object) {
+        $this.Name = $object.name
+        $this.Description = $object.description
+        $this.Allowed = $object.allowed
     }
 }
 

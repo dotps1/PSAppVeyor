@@ -10,16 +10,17 @@ Function Get-AppVeyorEnvironment {
             ValueFromPipelineByPropertyName = $true
         )]
         [Int]
-        $DeploymentEnvironemntID,
-
-        [Parameter()]
-        [Switch]
-        $Settings
+        $DeploymentEnvironmentID = $null
     )
 
     Process {
+        $restMethod = "environments"
+        if ($null -ne $PSCmdlet.DeploymentEnvironmentId) {
+            $restMethod += "/${DeploymentEnvironmentId}/settings"
+        }
+
         [AppVeyorEnvironment]::new(
-            (Invoke-AppVeyorApi -Method 'GET' -RestMethod 'environments')
+            (Invoke-AppVeyorApi -Method 'GET' -RestMethod $restMethod)
         )
     }
 }

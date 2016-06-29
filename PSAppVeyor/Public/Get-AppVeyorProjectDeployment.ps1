@@ -1,9 +1,7 @@
 Function Get-AppVeyorProjectDeployment {
     
     [CmdletBinding()]
-    [OutputType(
-
-    )]
+    [OutputType()]
 
     Param (
         [Parameter(
