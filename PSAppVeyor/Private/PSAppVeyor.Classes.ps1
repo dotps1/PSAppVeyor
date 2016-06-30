@@ -384,8 +384,7 @@ Class AppVeyorUser {
     [Int]$UserId
     [String]$FullName
     [String]$Email
-    [Int]$RoleId
-    [String]$RoleName
+    [AppVeyorUserRole[]]$Roles
     [String]$SuccessfulBuildNotification
     [String]$FailedBuildNotification
     [Bool]$NotifyWhenBuildStatusChangedOnly
@@ -400,13 +399,18 @@ Class AppVeyorUser {
         $this.UserId = $object.userId
         $this.FullName = $object.fullName
         $this.Email = $object.email
-        $this.RoleId = $object.roleId
-        $this.RoleName = $object.roleName
-        $this.SuccessfulBuildNotification = $object.successfuleBuildNotification
+        $this.SuccessfulBuildNotification = $object.ssuccessfulBuildNotification
         $this.FailedBuildNotification = $object.FailedBuildNotification
         $this.NotifyWhenBuildStatusChangedOnly = $object.notifyWhenBuildStatusChangedOnly
         $this.Created = $object.created
         $this.Updated = $object.updated
+
+        $this.Roles = $this.GetUserRoles()
+    }
+
+    [AppVeyorUserRole[]] GetUserRoles() {
+        return Invoke-AppVeyorApi -Method 'GET' -RestMethod ('users/{0}' -f $this.UserId) |
+            Select-Object -ExpandProperty 'roles'
     }
 }
 
@@ -417,20 +421,25 @@ Class AppVeyorUserRole {
     [Nullable[DateTime]]$Created
     [AppVeyorUserGroup[]]$Groups
 
-    AppVeyorUserRole([Object]$object, [Bool]$includeGroups) {
+    AppVeyorUserRole([Object]$object) {
         $this.RoleId = $object.roleId
         $this.Name = $object.name
         $this.IsSystem = $object.isSystem
         $this.Created = $object.created
+        $this.Groups = $object.groups
+    }
 
-        if ($includeGroups) {
-            $this.Groups = $this.GetUserGroups()
-        }
+    AppVeyorUserRole([Object]$object, [Switch]$includeGroups) {
+        $this.RoleId = $object.roleId
+        $this.Name = $object.name
+        $this.IsSystem = $object.isSystem
+        $this.Created = $object.created
+        $this.Groups = $this.GetUserGroups()
     }
 
     [AppVeyorUserGroup[]] GetUserGroups() {
         return Invoke-AppVeyorApi -Method 'GET' -RestMethod ('roles/{0}' -f $this.RoleId) |
-            Select-Object -ExpandProperty groups
+            Select-Object -ExpandProperty 'groups'
     }
 }
 

@@ -14,16 +14,18 @@ Function Get-AppVeyorUser {
     )
 
     Process {
-        if ($null -ne $PSCmdlet.UserId) {
+        if ($null -ne $UserId) {
             foreach ($item in $UserId) {
                 [AppVeyorUser]::new(
                     (Invoke-AppVeyorApi -Method 'Get' -RestMethod "users/${item}")
                 )
             }
         } else {
-            [AppVeyorUser]::new(
-                (Invoke-AppVeyorApi -Method 'Get' -RestMethod 'users')
-            )
+            foreach ($result in (Invoke-AppVeyorApi -Method 'Get' -RestMethod 'users')) {
+                [AppVeyorUser]::new(
+                    $result
+                )
+            }
         }
     }
 }

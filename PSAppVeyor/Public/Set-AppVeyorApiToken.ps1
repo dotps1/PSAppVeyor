@@ -1,6 +1,9 @@
 Function Set-AppVeyorApiToken {
     
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = 'High',
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [Void]
     )]
@@ -14,22 +17,31 @@ Function Set-AppVeyorApiToken {
         $Token
     )
 
-    if (-not (Test-Path -Path "$env:AppData\PSAppVeyor\Private")) {
+    Begin {
         try {
-            New-Item -Path "$env:AppData\PSAppVeyor" -Name 'Private' -ItemType 'Directory' -ErrorAction 'Stop' |
-                Out-Null
+            $vault = New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
         } catch {
             $_
             return
         }
+
+        try {
+            if ($vault.FindAllByUserName('PSAppVeyor').Count -ne 0) {
+                if ($PSCmdlet.ShouldProcess($vault, 'Setting PSAppVeyor Api Token.  There is already an Api Token present, do you wish to update the value?')) {
+                    $vault.Add((New-Object -TypeName Windows.Security.Credentials.PasswordCredential -ArgumentList 'https://appveyor.com', 'PSAppVeyor', $Token))
+                }
+            }
+        } catch {
+            try {
+                $vault.Add((New-Object -TypeName Windows.Security.Credentials.PasswordCredential -ArgumentList 'https://appveyor.com', 'PSAppVeyor', $Token))
+            } catch {
+                $_
+                return
+            }
+        }
     }
 
-    try {
-        New-Object -TypeName 'System.Management.Automation.PSCredential' -ArgumentList $env:UserName, (ConvertTo-SecureString -String $Token -AsPlainText -Force) | 
-            Export-Clixml -Path "$env:AppData\PSAppVeyor\Private\ApiToken.xml" -Force |
-                Out-Null
-    } catch {
-        $_
-        return
+    End {
+        [GC]::Collect()
     }
 }

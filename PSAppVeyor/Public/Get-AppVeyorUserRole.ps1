@@ -17,7 +17,7 @@ Function Get-AppVeyorUserRole {
 
         [Parameter(
             HelpMessage = 'The Id of a specific role.',
-            ParameterSetName = 'StaticRole',
+            ParameterSetName = 'RoleId',
             ValueFromPipelineByPropertyName = $true
         )]
         [Int[]]
@@ -39,7 +39,7 @@ Function Get-AppVeyorUserRole {
                     )
                 } else {
                     [AppVeyorUserRole]::new(
-                        $result, $false
+                        $result
                     )
                 }
             }
