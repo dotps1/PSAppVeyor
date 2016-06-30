@@ -28,4 +28,8 @@ Function Get-AppVeyorUser {
             }
         }
     }
+
+    End {
+        [GC]::Collect()
+    }
 }

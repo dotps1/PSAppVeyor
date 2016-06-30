@@ -19,6 +19,8 @@ Function Set-AppVeyorApiToken {
 
     Begin {
         try {
+            [Void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime]
+            
             $vault = New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
         } catch {
             $_
