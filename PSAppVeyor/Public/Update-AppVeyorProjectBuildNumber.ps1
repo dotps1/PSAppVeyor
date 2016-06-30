@@ -1,6 +1,9 @@
 Function Update-AppVeyorProjectBuildNumber {
 
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = 'Medium',
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [Void]
     )]
@@ -32,10 +35,12 @@ Function Update-AppVeyorProjectBuildNumber {
     )
 
     Process {
-        $body = @{
-            nextBuildNumber = $BuildNumber
-        }
+        if ($PSCmdlet.ShouldProcess($ProjectName)) {
+            $body = @{
+                nextBuildNumber = $BuildNumber
+            }
 
-        Invoke-AppVeyorApi -Method 'PUT' -RestMethod "projects/${AccountName}/${ProjectName}/settings/build-number" -Body (ConvertTo-Json -InputObject $body)
+            Invoke-AppVeyorApi -Method 'PUT' -RestMethod "projects/${AccountName}/${ProjectName}/settings/build-number" -Body (ConvertTo-Json -InputObject $body)
+        }
     }
 }

@@ -1,6 +1,9 @@
 Function New-AppVeyorProject {
 
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = 'Medium',
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [AppVeyorProject]
     )]
@@ -29,13 +32,15 @@ Function New-AppVeyorProject {
     )
 
     Process {
-        $body = @{
-            repositoryProvider = $RepositoryProvider.ToString()
-            repositoryName = "${AccountName}/${ProjectName}"
+        if ($PSCmdlet.ShouldProcess($ProjectName)) {
+            $body = @{
+                repositoryProvider = $RepositoryProvider.ToString()
+                repositoryName = "${AccountName}/${ProjectName}"
+            }
+        
+            [AppVeyorProject]::new(
+                (Invoke-AppVeyorApi -Method 'POST' -RestMethod projects -Body (ConvertTo-Json -InputObject $body))
+            )
         }
-
-        [AppVeyorProject]::new(
-            (Invoke-AppVeyorApi -Method 'POST' -RestMethod projects -Body (ConvertTo-Json -InputObject $body))
-        )
     }
 }

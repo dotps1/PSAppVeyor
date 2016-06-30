@@ -1,6 +1,9 @@
 Function Remove-AppVeyorProject {
     
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = 'High',
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [Void]
     )]
@@ -29,12 +32,14 @@ Function Remove-AppVeyorProject {
     )
 
     Process {
-        $restMethod = "projects/${AccountName}/${ProjectName}"
+        if ($PSCmdlet.ShouldProcess($ProjectName)) {
+            $restMethod = "projects/${AccountName}/${ProjectName}"
 
-        if ($BuildCacheOnly.IsPresent) {
-            $restMethod += '/buildcache'
+            if ($BuildCacheOnly.IsPresent) {
+                $restMethod += '/buildcache'
+            }
+
+            Invoke-AppVeyorApi -Method 'DELETE' -RestMethod $restMethod
         }
-
-        Invoke-AppVeyorApi -Method 'DELETE' -RestMethod $restMethod
     }
 }

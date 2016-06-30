@@ -1,6 +1,9 @@
 Function Stop-AppVeyorProjectBuild {
 
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = 'Medium',
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [Void]
     )]
@@ -29,6 +32,8 @@ Function Stop-AppVeyorProjectBuild {
     )
 
     Process {
-        Invoke-AppVeyorApi -Method 'DELETE' -RestMethod "builds/${AccountName}/${ProjectName}/${BuildId}"
+        if ($PSCmdlet.ShouldProcess($ProjectName)) {
+            Invoke-AppVeyorApi -Method 'DELETE' -RestMethod "builds/${AccountName}/${ProjectName}/${BuildId}"
+        }
     }
 }

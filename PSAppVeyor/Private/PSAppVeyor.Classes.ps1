@@ -399,7 +399,7 @@ Class AppVeyorUser {
         $this.UserId = $object.userId
         $this.FullName = $object.fullName
         $this.Email = $object.email
-        $this.SuccessfulBuildNotification = $object.ssuccessfulBuildNotification
+        $this.SuccessfulBuildNotification = $object.successfulBuildNotification
         $this.FailedBuildNotification = $object.FailedBuildNotification
         $this.NotifyWhenBuildStatusChangedOnly = $object.notifyWhenBuildStatusChangedOnly
         $this.Created = $object.created

@@ -44,6 +44,8 @@ Function Set-AppVeyorApiToken {
     }
 
     End {
+        Remove-Variable -Name Token -Force
+        
         [GC]::Collect()
     }
 }
