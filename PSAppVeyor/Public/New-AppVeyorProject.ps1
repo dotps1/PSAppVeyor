@@ -27,7 +27,7 @@ Function New-AppVeyorProject {
             Mandatory = $true,
             ValueFromPipelineByPropertyName = $true
         )]
-        [AppVeyorRepositoryType]
+        [AppVeyorProjectRepositoryType]
         $RepositoryProvider
     )
 

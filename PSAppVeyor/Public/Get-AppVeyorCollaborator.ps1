@@ -1,4 +1,4 @@
-Function Get-AppVeyorUser {
+Function Get-AppVeyorCollaborator {
 
     [CmdletBinding()]
     [OutputType(
@@ -18,11 +18,11 @@ Function Get-AppVeyorUser {
         if ($null -ne $UserId) {
             foreach ($item in $UserId) {
                 [AppVeyorUser]::new(
-                    (Invoke-AppVeyorApi -Method 'Get' -RestMethod "users/${item}")
+                    (Invoke-AppVeyorApi -Method 'Get' -RestMethod "collaborators/${item}")
                 )
             }
         } else {
-            foreach ($result in (Invoke-AppVeyorApi -Method 'Get' -RestMethod 'users')) {
+            foreach ($result in (Invoke-AppVeyorApi -Method 'Get' -RestMethod 'collaborators')) {
                 [AppVeyorUser]::new(
                     $result
                 )

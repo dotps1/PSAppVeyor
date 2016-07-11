@@ -1,5 +1,7 @@
 # https://www.appveyor.com/docs/api/
 
+#region Classes
+
 Class AppVeyorProject {
     [Int]$ProjectId
     [Int]$AccountId
@@ -7,7 +9,7 @@ Class AppVeyorProject {
     [AppVeyorBuild[]]$Builds
     [String]$Name
     [String]$Slug
-    [AppVeyorRepositoryType]$RepositoryType
+    [AppVeyorProjectRepositoryType]$RepositoryType
     [String]$RepositoryScm
     [String]$RepositoryName
     [String]$RepositoryBranch
@@ -60,7 +62,7 @@ Class AppVeyorBuild {
     [String]$CommitterName
     [String]$CommitterUserName
     [Nullable[DateTime]]$Committed
-    [AppVeyorMessage[]]$Messages
+    [Object[]]$Messages
     [String]$Status
     [Nullable[DateTime]]$Started
     [Nullable[DateTime]]$Finished
@@ -269,10 +271,6 @@ Class AppVeyorJob {
     }
 }
 
-Class AppVeyorMessage {
-    AppVeyorMessage() { }
-}
-
 Class AppVeyorNuGetFeed {
     [String]$Id
     [String]$Name
@@ -363,16 +361,21 @@ Class AppVeyorEnvironmentSetting {
 
 Class AppVeyorProviderSetting {
     [String]$Name
-    [HashTable]$Value
+    [AppVeyourProviderSettingValue]$Value
 
     AppVeyorProviderSetting([Object]$object) {
         $this.Name = $object.name
-        $this.Value = foreach ($item in $object.value) {
-            [HashTable]@{ 
-                'IsEncrypted' = $item.isEncrypted -as [Bool]
-                'Value' = $item.value -as [String]
-            }    
-        }
+        $this.Value = $object.value  
+    }
+}
+
+Class AppVeyourProviderSettingValue {
+    [Bool]$IsEncrypted
+    [String]$Value
+
+    AppVeyourProviderSettingValue([Object]$object) {
+        $this.IsEncrypted = $object.isEncrypted
+        $this.Value = $object.value
     }
 }
 
@@ -384,6 +387,8 @@ Class AppVeyorUser {
     [Int]$UserId
     [String]$FullName
     [String]$Email
+    [Int]$RoleId
+    [String]$RoleName
     [AppVeyorUserRole[]]$Roles
     [String]$SuccessfulBuildNotification
     [String]$FailedBuildNotification
@@ -399,6 +404,8 @@ Class AppVeyorUser {
         $this.UserId = $object.userId
         $this.FullName = $object.fullName
         $this.Email = $object.email
+        $this.RoleId = $object.roleId
+        $this.RoleName = $object.roleName
         $this.SuccessfulBuildNotification = $object.successfulBuildNotification
         $this.FailedBuildNotification = $object.FailedBuildNotification
         $this.NotifyWhenBuildStatusChangedOnly = $object.notifyWhenBuildStatusChangedOnly
@@ -465,13 +472,19 @@ Class AppVeyorUserGroupPermission {
     }
 }
 
-Enum AppVeyorRepositoryType {
-    gitHub
-    bitBucket
-    vso
-    gitLab
-    kiln
-    stash
-    gitHubmercurial
-    subversion
+#endregion Classes
+
+#region Enums
+
+Enum AppVeyorProjectRepositoryType {
+    GitHub
+    BitBucket
+    VSO
+    GitLab
+    Kiln
+    Stash
+    GitHubMercurial
+    SubVersion
 }
+
+#endregion Enums

@@ -1,4 +1,4 @@
-Function Remove-AppVeyorEnvironment {
+Function Remove-AppVeyorUser {
 
     [CmdletBinding(
         ConfirmImpact = 'High',
@@ -13,13 +13,13 @@ Function Remove-AppVeyorEnvironment {
             ValueFromPipelineByPropertyName = $true
         )]
         [Int[]]
-        $DeploymentEnvironmentID
+        $UserId
     )
 
     Process {
-        foreach ($item in $DeploymentEnvironmentID) {
+        foreach ($item in $UserId) {
             if ($PSCmdlet.ShouldProcess($item)) {
-                Invoke-AppVeyorApi -Method 'DELETE' -RestMethod "environments/${item}"
+                Invoke-AppVeyorApi -Method 'DELETE' -RestMethod "users/${item}"
             }
         }
     }
