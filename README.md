@@ -12,19 +12,25 @@ PS GitHub:\> Get-Command -Module PSAppVeyor
 
 CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
-Function        Get-AppVeyorBuild                                  0.2.0      PSAppVeyor
-Function        Get-AppVeyorEnvironment                            0.2.0      PSAppVeyor
-Function        Get-AppVeyorProject                                0.2.0      PSAppVeyor
-Function        Get-AppVeyorProjectSetting                         0.2.0      PSAppVeyor
-Function        Get-AppVeyorUser                                   0.2.0      PSAppVeyor
-Function        Get-AppVeyorUserRole                               0.2.0      PSAppVeyor
-Function        New-AppVeyorProject                                0.2.0      PSAppVeyor
-Function        Remove-AppVeyorEnvironment                         0.2.0      PSAppVeyor
-Function        Remove-AppVeyorProject                             0.2.0      PSAppVeyor
-Function        Set-AppVeyorApiToken                               0.2.0      PSAppVeyor
-Function        Start-AppVeyorProjectBuild                         0.2.0      PSAppVeyor
-Function        Stop-AppVeyorProjectBuild                          0.2.0      PSAppVeyor
-Function        Update-AppVeyorProjectBuildNumber                  0.2.0      PSAppVeyor
+Function        Get-AppVeyorBuild                                  0.2.1      PSAppVeyor
+Function        Get-AppVeyorCollaborator                           0.2.1      PSAppVeyor
+Function        Get-AppVeyorEnvironment                            0.2.1      PSAppVeyor
+Function        Get-AppVeyorProject                                0.2.1      PSAppVeyor
+Function        Get-AppVeyorProjectSetting                         0.2.1      PSAppVeyor
+Function        Get-AppVeyorUser                                   0.2.1      PSAppVeyor
+Function        Get-AppVeyorUserRole                               0.2.1      PSAppVeyor
+Function        New-AppVeyorCollaborator                           0.2.1      PSAppVeyor
+Function        New-AppVeyorProject                                0.2.1      PSAppVeyor
+Function        New-AppVeyorUser                                   0.2.1      PSAppVeyor
+Function        Remove-AppVeyorCollaborator                        0.2.1      PSAppVeyor
+Function        Remove-AppVeyorEnvironment                         0.2.1      PSAppVeyor
+Function        Remove-AppVeyorProject                             0.2.1      PSAppVeyor
+Function        Remove-AppVeyorUser                                0.2.1      PSAppVeyor
+Function        Set-AppVeyorApiToken                               0.2.1      PSAppVeyor
+Function        Start-AppVeyorProjectBuild                         0.2.1      PSAppVeyor
+Function        Stop-AppVeyorProjectBuild                          0.2.1      PSAppVeyor
+Function        Update-AppVeyorProjectBuildNumber                  0.2.1      PSAppVeyor
+Function        Update-AppVeyorUser                                0.2.1      PSAppVeyor
 ```
 
 I havent had a whole lot of time to put into this, but I will keep adding functionality.
