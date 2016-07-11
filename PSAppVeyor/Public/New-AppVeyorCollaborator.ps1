@@ -23,7 +23,7 @@ Function New-AppVeyorCollaborator {
     )
 
     Process {
-        if ($PSCmdlet.ShouldProcess($FullName)) {
+        if ($PSCmdlet.ShouldProcess($Email)) {
             $body = @{
                 'email' = $Email
                 'roleId' = $RoleId
