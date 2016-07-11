@@ -33,15 +33,9 @@ Function Get-AppVeyorUserRole {
             }
         } else {
             foreach ($result in (Invoke-AppVeyorApi -Method 'GET' -RestMethod 'roles')) {
-                if ($IncludeGroups.IsPresent) {
-                    [AppVeyorUserRole]::new(
-                        $result, $true
-                    )
-                } else {
-                    [AppVeyorUserRole]::new(
-                        $result
-                    )
-                }
+                [AppVeyorUserRole]::new(
+                    $result, $IncludeGroups.IsPresent
+                )
             }
         }
     }

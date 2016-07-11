@@ -1,6 +1,9 @@
 Function Update-AppVeyorUser {
 
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = 'Medium',
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [Void]
     )]
@@ -56,30 +59,32 @@ Function Update-AppVeyorUser {
     )
 
     Process {
-        try {
-            $currentUser = Get-AppVeyorUser -UserId $UserId
-        } catch {
-            $_
-            return
-        }
-
-        $body = @{
-            userId = $UserId
-            fullName = $currentUser.FullName
-            email = $currentUser.Email
-            password = $null
-            roleId = $currentUser.RoleId
-            successfulBuildNotification = $currentUser.SuccessfulBuildNotification
-            failedBuildNotification = $currentUser.FailedBuildNotification
-            notifyWhenBuildStatusChangedOnly = $currentUser.NotifyWhenBuildStatusChangedOnly
-        }
-
-        foreach ($parameter in $PSBoundParameters) {
-            if ($null -ne $parameter) {
-                $body.$($parameter.Keys) = $parameter.Values
+        if ($PSCmdlet.ShouldProcess($UserId)) {
+            try {
+                $currentUser = Get-AppVeyorUser -UserId $UserId
+            } catch {
+                $_
+                return
             }
-        }
 
-        Invoke-AppVeyorApi -Method 'POST' -RestMethod 'users' -Body (ConvertTo-Json -InputObject $body)
+            $body = @{
+                userId = $UserId
+                fullName = $currentUser.FullName
+                email = $currentUser.Email
+                password = $null
+                roleId = $currentUser.RoleId
+                successfulBuildNotification = $currentUser.SuccessfulBuildNotification
+                failedBuildNotification = $currentUser.FailedBuildNotification
+                notifyWhenBuildStatusChangedOnly = $currentUser.NotifyWhenBuildStatusChangedOnly
+            }
+
+            foreach ($parameter in $PSBoundParameters) {
+                if ($null -ne $parameter) {
+                    $body.$($parameter.Keys) = $parameter.Values
+                }
+            }
+
+            Invoke-AppVeyorApi -Method 'POST' -RestMethod 'users' -Body (ConvertTo-Json -InputObject $body)
+        }
     }
 }
