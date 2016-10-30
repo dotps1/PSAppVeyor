@@ -65,7 +65,7 @@ Function Start-AppVeyorProjectBuild {
             'LatestBuild' {
                 $body.Add('branch', $Branch)
 
-                if (-null -ne $EnvironmentVariable) {
+                if ($null -ne $EnvironmentVariable) {
                     $body.Add('environmentVariables', $EnvironmentVariable)
                 }
             }
