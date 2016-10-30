@@ -1,6 +1,8 @@
 Function Start-AppVeyorProjectBuild {
 
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true
+    )]
     [OutputType(
         [AppVeyorBuild]
     )]
@@ -63,7 +65,9 @@ Function Start-AppVeyorProjectBuild {
 
         switch ($PSCmdlet.ParameterSetName) {
             'LatestBuild' {
-                $body.Add('branch', $Branch)
+                $body.Add(
+                    'branch', $Branch
+                )
 
                 if ($null -ne $EnvironmentVariable) {
                     $body.Add('environmentVariables', $EnvironmentVariable)
@@ -71,17 +75,25 @@ Function Start-AppVeyorProjectBuild {
             }
 
             'CommitId' {
-                $body.Add('branch', $Branch)
-                $body.Add('commitId', $CommitId)
+                $body.Add(
+                    'branch', $Branch
+                )
+                $body.Add(
+                    'commitId', $CommitId
+                )
             }
 
             'GitHubPullRequest' {
-                $body.Add('pullRequestId', $GitHubPullRequestId)
+                $body.Add(
+                    'pullRequestId', $GitHubPullRequestId
+                )
             }
         }
 
-        [AppVeyorBuild]::new(
-            (Invoke-AppVeyorApi -Method 'POST' -RestMethod 'builds' -Body (ConvertTo-Json -InputObject $body))
-        )
+        if ($PSCmdlet.ShouldProcess($body)) {
+            [AppVeyorBuild]::new(
+                (Invoke-AppVeyorApi -Method 'POST' -RestMethod 'builds' -Body (ConvertTo-Json -InputObject $body))
+            )
+        }
     }
 }

@@ -1,6 +1,9 @@
 Function Invoke-AppVeyorApi {
 
-    [CmdletBinding()]
+    [CmdletBinding(
+        ConfirmImpact = "Low",
+        SupportsShouldProcess = $true
+    )]
     [OutputType()]
 
     Param (
@@ -8,7 +11,7 @@ Function Invoke-AppVeyorApi {
             Mandatory = $false
         )]
         [HashTable] 
-        $Headers = @{ },
+        $Headers = $null,
         
         [Parameter(
             Mandatory = $true
@@ -50,8 +53,12 @@ Function Invoke-AppVeyorApi {
             return
         }
 
-        $Headers.Add('Authorization', "Bearer $token")
-        $Headers.Add('Content-type', 'application/json')
+        $Headers.Add(
+            'Authorization', "Bearer $token"
+        )
+        $Headers.Add(
+            'Content-type', 'application/json'
+        )
 
         $request = @{
             Headers = $Headers
@@ -61,11 +68,15 @@ Function Invoke-AppVeyorApi {
         }
 
         if (-not ([String]::IsNullOrEmpty($Body))) {
-            $request.Add('Body', $Body)
+            $request.Add(
+                'Body', $Body
+            )
         }
 
         try {
-            Invoke-RestMethod @request
+            if ($PSCmdlet.ShouldProcess($request)) {
+                Invoke-RestMethod @request
+            }
         } catch {
             $message = ConvertFrom-Json -InputObject $_.ErrorDetails.Message |
                 Select-Object -ExpandProperty message
