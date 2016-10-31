@@ -1,6 +1,9 @@
 # PSAppVeyor
 ### A PowerShell Module providing functions to interact with the [AppVeyor](www.appveyor.com) REST API.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/83nuaecxyn7rr16q?svg=true)](https://ci.appveyor.com/project/dotps1/psappveyor)
+
+
 This module is still very beta, in fact, we will just call it alpha.
 
 To get started after you install/import it, you need to use the `Set-AppVeyorApiToken` cmdlet.  You can get the reqired value from your [AppVeyor Account](https://ci.appveyor.com/api-token).
