@@ -11,7 +11,7 @@ Function Invoke-AppVeyorApi {
             Mandatory = $false
         )]
         [HashTable] 
-        $Headers = $null,
+        $Headers = @{},
         
         [Parameter(
             Mandatory = $true
