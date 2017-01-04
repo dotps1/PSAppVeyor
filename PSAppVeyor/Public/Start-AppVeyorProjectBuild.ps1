@@ -27,25 +27,23 @@ Function Start-AppVeyorProjectBuild {
 
         [Parameter(
             Mandatory = $true,
-            ParameterSetName = 'LatestBuild',
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [Parameter(
-            Mandatory = $true,
-            ParameterSetName = 'CommitId',
+            ParameterSetName = 'Branch',
             ValueFromPipelineByPropertyName = $true
         )]
         [String]
         $Branch,
 
         [Parameter(
-            ParameterSetName = 'LatestBuild'
+            ParameterSetName = 'Branch'
+        )]
+        [Parameter(
+            ParameterSetName = 'GitHubPullRequest'
         )]
         [HashTable]
         $EnvironmentVariable = $null,
 
         [Parameter(
-            ParameterSetName = 'CommitId'
+            ParameterSetName = 'Branch'
         )]
         [String]
         $CommitId,
@@ -64,23 +62,14 @@ Function Start-AppVeyorProjectBuild {
         }
 
         switch ($PSCmdlet.ParameterSetName) {
-            'LatestBuild' {
+            'Branch' {
                 $body.Add(
                     'branch', $Branch
                 )
 
-                if ($null -ne $EnvironmentVariable) {
-                    $body.Add('environmentVariables', $EnvironmentVariable)
+                if ($null -ne $CommitId) {
+                    $body.Add('commitId', $CommitId)
                 }
-            }
-
-            'CommitId' {
-                $body.Add(
-                    'branch', $Branch
-                )
-                $body.Add(
-                    'commitId', $CommitId
-                )
             }
 
             'GitHubPullRequest' {
@@ -88,6 +77,10 @@ Function Start-AppVeyorProjectBuild {
                     'pullRequestId', $GitHubPullRequestId
                 )
             }
+        }
+
+        if ($null -ne $EnvironmentVariable) {
+            $body.Add('environmentVariables', $EnvironmentVariable)
         }
 
         if ($PSCmdlet.ShouldProcess($body)) {
